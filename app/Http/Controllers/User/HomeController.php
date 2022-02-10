@@ -1,11 +1,10 @@
 <?php
-
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-// use Auth;
+use \Milon\Barcode\DNS2D;
 
 class HomeController extends Controller
 {
@@ -19,6 +18,8 @@ class HomeController extends Controller
         $this->middleware('auth:user');
     }
 
+    // $auths = Auth::user();
+
     /**
      * Show the application dashboard.
      *
@@ -26,7 +27,15 @@ class HomeController extends Controller
      */
     public function home()
     {
-        $auths = Auth::user();
-        return view('user.home', ['auths' => $auths]);
+        return view('user.home');
+    }
+    
+    public function show_qrcode(){
+        // $qrCode = DNS2D::getBarcodePNG('4445645656', 'QRCODE');
+        return view('user.show_qrcode');
+    }
+    
+    public function edit(){
+        return view('user.edit');
     }
 }

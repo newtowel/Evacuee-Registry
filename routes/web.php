@@ -14,8 +14,10 @@ Route::namespace('User')->prefix('user')->name('user.')->group(function () {
     Route::middleware('auth:user')->group(function () {
 
         // TOPページ
-        Route::resource('home', 'HomeController', ['only' => 'home']);
+        // Route::resource('home', 'HomeController', ['only' => 'home']);
         Route::get('home', 'HomeController@home');
+        Route::get('show_qrcode', 'HomeController@show_qrcode')->name('show_qrcode');
+        Route::get('edit', 'HomeController@edit')->name('edit');
     });
 });
 Route::get('/logout', 'App\Http\Controllers\User\LoginController@logout') -> name('logout');
