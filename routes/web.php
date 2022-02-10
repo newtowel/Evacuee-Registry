@@ -14,10 +14,11 @@ Route::namespace('User')->prefix('user')->name('user.')->group(function () {
     Route::middleware('auth:user')->group(function () {
 
         // TOPページ
-        Route::resource('home', 'HomeController', ['only' => 'index']);
-
+        Route::resource('home', 'HomeController', ['only' => 'home']);
+        Route::get('home', 'HomeController@home');
     });
 });
+Route::get('/logout', 'App\Http\Controllers\User\LoginController@logout') -> name('logout');
 
 // 管理者
 Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
@@ -38,6 +39,3 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
     });
 
 });
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
