@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
 
+//未ログイン時にログインが必要なページにアクセスしたときのリダイレクト設定
 class Authenticate extends Middleware
 {
     protected $user_route  = 'user.login';
