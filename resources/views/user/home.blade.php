@@ -1,82 +1,90 @@
 @extends('layouts.app')
 
 @section('content')
-
-<table class="table">
+<div class="list-group">
+<a class="list-group-item active" href="{{route('user.edit')}}">登録情報編集</a>
+<a class="list-group-item" href="{{route('user.show_qrcode')}}">QRコード表示</a>
+</div>
+<div class="center-block">
+    <table class="table">
+    <tr>
+        <th class="text-right">UUID</th>
+        <td>{{ Auth::user()->id_for_qrcode }}</td>
+    </tr>
     <tr>
         <th class="text-right">E-mailアドレス</th>
-        <td>{{ $auths->email }}</td>
+        <td>{{ Auth::user()->email }}</td>
     </tr>
     <tr>
     <tr>
         <th class="text-right">お名前</th>
-        <td>{{ $auths->name }}</td>
+        <td>{{ Auth::user()->name }}</td>
     </tr>
         <th class="text-right">ふりがな</th>
-        <td>{{ $auths->furigana }}</td>
+        <td>{{ Auth::user()->furigana }}</td>
     </tr>
     <tr>
         <th class="text-right">性別</th>
-        <td>{{ $auths->sex }}</td>
+        <td>{{ Auth::user()->sex }}</td>
     </tr>
     <tr>
         <th class="text-right">居住行政区</th>
-        <td>{{ $auths->district }}</td>
+        <td>{{ Auth::user()->district }}</td>
     </tr>
         <tr>
         <th class="text-right">生年月日</th>
-        <td>{{ $auths->birth_date }}</td>
+        <td>{{ Auth::user()->birth_date }}</td>
     </tr>
     </tr>
     <tr>
         <th class="text-right">年齢</th>
-        <td>{{ $auths->age }}</td>
+        <td>{{ Auth::user()->age }}</td>
     </tr>
     <tr>
         <th class="text-right">住所</th>
-        <td>{{ $auths->address }}</td>
+        <td>{{ Auth::user()->address }}</td>
     </tr>
     <tr>
         <th class="text-right">電話番号</th>
-        <td>{{ $auths->phone_number }}</td>
+        <td>{{ Auth::user()->phone_number }}</td>
     </tr>
     <tr>
         <th class="text-right">電話番号</th>
-        <td>{{ $auths->phone_number }}</td>
+        <td>{{ Auth::user()->phone_number }}</td>
     </tr>
     <tr>
         <th class="text-right">緊急連絡先の氏名</th>
-        <td>{{ $auths->ec_name }}</td>
+        <td>{{ Auth::user()->ec_name }}</td>
     </tr>
     <tr>
         <th class="text-right">緊急連絡先の住所</th>
-        <td>{{ $auths->ec_address }}</td>
+        <td>{{ Auth::user()->ec_address }}</td>
     </tr>
     <tr>
         <th class="text-right">緊急連絡先の電話番号</th>
-        <td>{{ $auths->ec_phone_number }}</td>
+        <td>{{ Auth::user()->ec_phone_number }}</td>
     </tr>
     <tr>
         <th class="text-right">親族氏名１</th>
-        <td>{{ $auths->relative_name1 }}</td>
+        <td>{{ Auth::user()->relative_name1 }}</td>
     </tr>
     <tr>
         <th class="text-right">親族氏名２</th>
-        <td>{{ $auths->relative_name2 }}</td>
+        <td>{{ Auth::user()->relative_name2 }}</td>
     </tr>
     <tr>
         <th class="text-right">親族氏名３</th>
-        <td>{{ $auths->relative_name3 }}</td>
+        <td>{{ Auth::user()->relative_name3 }}</td>
     </tr>
     <tr>
         <th class="text-right">負傷・疾病の状況、おくすり手帳の内容及び特別な要望</th>
-        <td>{{ $auths->special_request }}</td>
+        <td>{{ Auth::user()->special_request }}</td>
     </tr>
     <tr>
         <th class="text-right">安否確認のための身元開示許可</th>
-        <td>{{ $auths->disclosure_permission }}</td>
+        <td>{{ Auth::user()->disclosure_permission }}</td>
     </tr>
     
 </table>
-
+</div>
 @endsection
