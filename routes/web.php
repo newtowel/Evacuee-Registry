@@ -36,8 +36,9 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
     Route::middleware('auth:admin')->group(function () {
 
         // TOPページ
-        Route::resource('home', 'HomeController', ['only' => 'index']);
-
+        // Route::resource('home', 'HomeController', ['only' => 'index']);
+        Route::get('home', 'HomeController@index');
+        Route::post('posts', 'HomeController@list');
     });
 
 });
