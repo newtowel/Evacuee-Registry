@@ -2,15 +2,11 @@
 
 @section('content')
 <div class="list-group">
-<a class="list-group-item active" href="{{route('user.edit')}}">登録情報編集</a>
+<a class="list-group-item" href="{{route('user.edit')}}">登録情報編集</a>
 <a class="list-group-item" href="{{route('user.show_qrcode')}}">QRコード表示</a>
 </div>
 <div class="center-block">
     <table class="table">
-    <tr>
-        <th class="text-right">UUID</th>
-        <td>{{ Auth::user()->id_for_qrcode }}</td>
-    </tr>
     <tr>
         <th class="text-right">E-mailアドレス</th>
         <td>{{ Auth::user()->email }}</td>
