@@ -16,10 +16,10 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'id_for_qrcode',
-        'name',
+        'shelter',
         'email',
         'password',
+        'name',
         'furigana',
         'sex',
         'district',

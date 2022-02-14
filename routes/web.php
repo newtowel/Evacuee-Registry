@@ -18,9 +18,9 @@ Route::namespace('User')->prefix('user')->name('user.')->group(function () {
         Route::get('home', 'HomeController@home');
         Route::get('show_qrcode', 'HomeController@show_qrcode')->name('show_qrcode');
         Route::get('edit', 'HomeController@edit')->name('edit');
+        Route::post('logout', 'Auth\LoginController@logout')->name('logout');
     });
 });
-Route::get('/logout', 'App\Http\Controllers\User\LoginController@logout') -> name('logout');
 
 // 管理者
 Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
@@ -38,7 +38,9 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         // TOPページ
         // Route::resource('home', 'HomeController', ['only' => 'index']);
         Route::get('home', 'HomeController@index');
-        Route::post('posts', 'HomeController@list');
+        Route::post('home', 'HomeController@list');
+        Route::get('list', 'HomeController@list');
+        Route::post('logout', 'Auth\LoginController@logout')->name('logout');
     });
 
 });

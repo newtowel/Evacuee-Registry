@@ -19,28 +19,22 @@ class HomeController extends Controller
         return view('admin.home');
     }
     
-    private static $evacuees_here = [];
     public function list(Request $request)
     {
-        // return view('/posts/', compact('evacuees_here'));
+
+        $evacuees_here = [];
+
+        //QRコードのUUIDに一致するユーザを抽出
+        $user = User::where('id_for_qrcode', $request->uuid)->first();
         
-        $result = false;
-        $user = User::where('uuid', $request->uuid)->first();
-    
+        //ユーザが存在すれば
         if(!is_null($user)) {
     
-            array_unshift($evacuees_here, $user);
-            print($user);
-            $result = true;
-    
+            //ページの避難者名称をUserのshelterカラムに設定
+            $user->shelter = $request->shelter;
+            $user->save();
         }
-    
-        return [
-            'result' => $result,
-            'user' => $user,
-            
-        ];
-
+        //今入場した避難者とこれまで入場した避難者すべての集合を返す
+        return compact('user');
     }
-
 }

@@ -76,7 +76,7 @@
                         </div>
                         
                         <div class="form-group row">
-                            <label for="disclosure_permission" class="col-md-4 col-form-label text-md-right">{{ __('Sex') }}</label>
+                            <label for="Sex" class="col-md-4 col-form-label text-md-right">{{ __('Sex') }}</label>
 
                             <div class="form-check form-check-inline">                
                                 <input class="form-check-input" type="radio" name="sex" id="SexRadio1" value="男性">

@@ -1,4 +1,6 @@
 <html>
+<!-- CSRF Token -->
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <head>
     <style>
 
@@ -14,23 +16,48 @@
     </style>
 </head>
 <body>
-    <div id="app">
-        <div style="text-align:center;font-size:35px;">QRコードを読みとって自動ログインできます</div>
+    <label for="shelter">避難所名:</label>
+
+    <input type="text" id="shelter" name="shelter" required>
+
+<div id="app">
+    <div id="entire">
+        <div style="text-align:center;font-size:35px;">QRコードを読みとります</div>
         <br>
         <canvas id="canvas"></canvas>
+            <h1>入場した避難者</h1>
+            <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>氏名</th>
+                    <th>ふりがな</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    
+                    <!--<tr v-for="evacuee in evacuees_here"> -->
+                    <!--    -->
+                    <!--</tr>-->
+                </tbody>
+            </table>
+            <!--<span v-text="num"></span>-->
+            @{{ num }}
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
+</div>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.min.js"></script>
-    <script src="js/jsQR.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
+    <script src="{{asset('/js/jsQR.js')}}"></script>
     <script>
-
-        new Vue({
-            el: '#app',
+        const app = new Vue({
+            el: 'app',
             data: {
+                num: 1,
                 video: null,
                 canvas: null,
                 context: null,
                 uuid: '',
+                shelter: '',
+                evacuees_here: [],
                 completed: false
             },
             computed: {
@@ -38,6 +65,9 @@
 
                     return (this.uuid !== '');
 
+                },
+                evacueesHere: function(){
+                    return this.evacuees_here;
                 }
             },
             methods: {
@@ -62,33 +92,30 @@
                             if(code) {
 
                                 this.uuid = code.data;
-                                axios.post('/admin/posts', { uuid: this.uuid })
+                                this.shelter = document.getElementById('shelter').value;
+                                
+                                axios.post('/admin/home', { uuid: this.uuid, shelter: this.shelter })
                                     .then((response) => {
 
-                                        const result = response.data.result;
                                         const user = response.data.user;
-
-                                        if(result) {
-
-                                            console.log(user);
+                                        if(user) {
+                                            console.log(name);
                                             this.completed = true;
-                                            alert('「'+ user.name +'」さん');
-                                            //location.href = '/admin/list'; // ここでリダイレクト-->
-
+                                            this.evacuees_here.unshift([user.name, user.furigana]);
+                                            console.log("e.h.: " + this.evacuees_here);
+                                            console.log("num: " + this.num);
+                                            //alert('「'+ user.name +'」さん、ようこそ！');
                                         } else {
-
                                             console.log('ログイン失敗..');
-
                                         }
-
                                     })
-                                    .catch((error) => {})
+                                    .catch((error) => {console.info(error.config);})
                                     .then(() => {
 
                                         this.uuid = '';
 
                                     });
-
+                                    
                             }
 
                         }
