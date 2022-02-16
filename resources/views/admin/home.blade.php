@@ -1,5 +1,8 @@
 <html>
+<!-- CSRF Token -->
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <head>
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet" type="text/css">
     <style>
 
         canvas {
@@ -12,109 +15,16 @@
         }
 
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
+    <script src="{{asset('/js/jsQR.js')}}"></script>
 </head>
 <body>
-    <div id="app">
-        <div style="text-align:center;font-size:35px;">QRコードを読みとって自動ログインできます</div>
-        <br>
-        <canvas id="canvas"></canvas>
-    </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.min.js"></script>
-    <script src="js/jsQR.js"></script>
-    <script>
-
-        new Vue({
-            el: '#app',
-            data: {
-                video: null,
-                canvas: null,
-                context: null,
-                uuid: '',
-                completed: false
-            },
-            computed: {
-                hasUuid() {
-
-                    return (this.uuid !== '');
-
-                }
-            },
-            methods: {
-                renderFrame() {
-
-                    requestAnimationFrame(this.renderFrame);   // 描画を繰り返す
-
-                    if(!this.hasUuid && !this.completed) { // まだQRコードが読み込まれていない場合
-
-                        const video = this.video;
-                        const canvas = this.canvas;
-                        const context = this.context;
-
-                        if(video.readyState === video.HAVE_ENOUGH_DATA) {
-
-                            canvas.height = video.videoHeight;
-                            canvas.width = video.videoWidth;
-                            context.drawImage(video, 0, 0, canvas.width, canvas.height);
-                            const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-                            const code = jsQR(imageData.data, imageData.width, imageData.height);
-
-                            if(code) {
-
-                                this.uuid = code.data;
-                                axios.post('/admin/posts', { uuid: this.uuid })
-                                    .then((response) => {
-
-                                        const result = response.data.result;
-                                        const user = response.data.user;
-
-                                        if(result) {
-
-                                            console.log(user);
-                                            this.completed = true;
-                                            alert('「'+ user.name +'」さん');
-                                            //location.href = '/admin/list'; // ここでリダイレクト-->
-
-                                        } else {
-
-                                            console.log('ログイン失敗..');
-
-                                        }
-
-                                    })
-                                    .catch((error) => {})
-                                    .then(() => {
-
-                                        this.uuid = '';
-
-                                    });
-
-                            }
-
-                        }
-
-                    }
-
-                }
-            },
-            mounted() {
-
-                this.video = document.createElement('video');
-                this.canvas = document.getElementById('canvas');
-                this.context = this.canvas.getContext('2d');
-
-                navigator.mediaDevices.getUserMedia({ video: true })
-                    .then((stream) => {
-
-                        this.video.srcObject = stream;
-                        this.video.play();
-                        requestAnimationFrame(this.renderFrame);
-
-                    });
-
-            }
-        });
-
-    </script>
+    <div style="text-align:center;font-size:35px;">QRコードを読みとります</div>
+    <br>
+    <canvas id="canvas"></canvas>
+    <div id="app"></div>
+    <!--<h3 id=""></h3>-->
+    <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="/js/load_qrcode.js"></script>
 </body>
 </html>

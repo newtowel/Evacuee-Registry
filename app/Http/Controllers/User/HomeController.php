@@ -36,6 +36,16 @@ class HomeController extends Controller
     }
     
     public function edit(){
-        return view('user.edit');
+        return view('user.edit', ['user' => Auth::user()]);
+    }
+    public function update(Request $request){
+        $user_form = $request->all();
+        $user = Auth::user();
+        //不要な「_token」の削除
+        unset($user_form['_token']);
+        //保存
+        $user->fill($user_form)->save();
+        //リダイレクト
+        return redirect('user/home');
     }
 }
