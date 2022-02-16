@@ -14,15 +14,13 @@ class HomeController extends Controller
         $this->middleware('auth:admin');
     }
 
-    public function index()
+    public function index(User $user)
     {
         return view('admin.home');
     }
     
-    public function list(Request $request)
+    public function examineUser(Request $request)
     {
-
-        $evacuees_here = [];
 
         //QRコードのUUIDに一致するユーザを抽出
         $user = User::where('id_for_qrcode', $request->uuid)->first();
@@ -34,7 +32,19 @@ class HomeController extends Controller
             $user->shelter = $request->shelter;
             $user->save();
         }
-        //今入場した避難者とこれまで入場した避難者すべての集合を返す
-        return compact('user');
+        //今入場した避難者を返す
+        return ['name' => $user->name];
+    }
+    
+    //特定のshelterにいる避難者たちのレコードを返す
+    public function list(Request $request){
+        $evacuees_in_the_shelter = User::where('shelter', $request->input('shelter'))->get();
+        //避難者リストページへ
+        return view('admin.evacuee.list', compact('evacuees_in_the_shelter'));
+    }
+    
+    //特定のIDの避難者レコードを返す
+    public function detail(User $evacuee){
+        return view('admin.evacuee.detail', compact('evacuee'));
     }
 }

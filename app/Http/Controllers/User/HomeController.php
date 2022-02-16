@@ -36,6 +36,9 @@ class HomeController extends Controller
     }
     
     public function edit(){
-        return view('user.edit');
+        return view('user.edit', Auth::user());
+    }
+    public function update(Request $request){
+        
     }
 }
