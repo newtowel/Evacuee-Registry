@@ -1,7 +1,7 @@
 @extends('layouts.admin.app')
 
 @section('content')
-<div>
+<div class="container">
     <div class="center-block">
         <table class="table">
             

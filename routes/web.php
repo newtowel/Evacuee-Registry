@@ -19,8 +19,8 @@ Route::namespace('User')->prefix('user')->name('user.')->group(function () {
         Route::get('home', 'HomeController@home'); //ユーザ情報確認
         Route::get('show_qrcode', 'HomeController@show_qrcode'); //QRコード確認
         Route::get('edit', 'HomeController@edit')->name('edit'); //ユーザ情報修正
-        Route::get('edit', 'HomeController@update')->name('update');
-        Route::post('logout', 'Auth\LoginController@logout')->name('logout')->name('logout'); 
+        Route::put('edit', 'HomeController@update')->name('update'); //更新情報登録
+        Route::post('logout', 'Auth\LoginController@logout')->name('logout'); 
     });
 });
 

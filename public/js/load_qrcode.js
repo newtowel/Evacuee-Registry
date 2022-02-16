@@ -4,6 +4,9 @@ const video = document.createElement('video');
 const canvas = document.getElementById('canvas');
 const context = canvas.getContext('2d');
 
+// let code = null;
+let is_already_loaded = false;
+    
 //webカメラのキャッチ
 navigator.mediaDevices.getUserMedia({ video: true })
     .then((stream) => {
@@ -15,12 +18,11 @@ navigator.mediaDevices.getUserMedia({ video: true })
 
     });
 
-renderFrame();
+// renderFrame();
 
 //描画
 function renderFrame(){
-    requestAnimationFrame(renderFrame);   // 描画を繰り返す
-    
+ 
     if(video.readyState === video.HAVE_ENOUGH_DATA) {
     
         canvas.height = video.videoHeight;
@@ -32,10 +34,11 @@ function renderFrame(){
         const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
         //得た画像からQRコードを得る
         const code = jsQR(imageData.data, imageData.width, imageData.height);
-    
+        
         //コードが映っていれば
         if(code) {
     
+            is_already_loaded = true;
             let uuid = code.data;
             
             //QRコードのUUIDからPOSTでユーザ確認、存在すればshelterを避難所名カラムに設定する
@@ -46,20 +49,32 @@ function renderFrame(){
                     
                     //DBに存在するユーザなら、確認した旨アラートを出し、避難者リストページへリダイレクト
                     if(name) {
-                        console.log(name);
-                        alert(name +'さん、ようこそ！');
                         
-                        //shelterに避難した者たちのリスト表示ページを開く
-                        window.open('/admin/evacuee/list?shelter=' + shelter);
+                        console.log(name);
+                        // if (!alert(name + 'さん、ようこそ！')){
+                        //     //shelterに避難した者たちのリスト表示ページを開く
+                        //     location.href = '/admin/evacuee/list?shelter=' + shelter;
+                        //     name = null;
+                        // }
+                        console.trace();
+                        alert(name + 'さん、ようこそ！');
+                        location.href = '/admin/evacuee/list?shelter=' + shelter;
+                        
                     } else {
-                        console.log('ログイン失敗..');
                     }
                 })
-                .catch((error) => {console.info(error.config);})
+                .catch((error) => {
+                    alert('このユーザは登録されていません');
+                    location.href = '/admin/home';
+                    console.info(error.config);
+                })
                 .then(() => {
-    
+                    // code = null;
                     uuid = '';
                 });
         }
     }
+
+    if(!is_already_loaded) requestAnimationFrame(renderFrame);   // 描画を繰り返す
+
 }

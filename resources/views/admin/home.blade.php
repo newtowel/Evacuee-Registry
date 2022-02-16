@@ -23,6 +23,7 @@
     <br>
     <canvas id="canvas"></canvas>
     <div id="app"></div>
+    <!--<h3 id=""></h3>-->
     <script src="{{ asset('js/app.js') }}" defer></script>
     <script src="/js/load_qrcode.js"></script>
 </body>
